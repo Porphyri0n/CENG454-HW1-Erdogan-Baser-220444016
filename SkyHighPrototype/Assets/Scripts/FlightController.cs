@@ -6,7 +6,8 @@ public class FlightController : MonoBehaviour
     [SerializeField] private float yawSpeed = 45f;
     [SerializeField] private float rollSpeed = 45f;
     [SerializeField] private float thrustSpeed = 5f;
-
+    private float currentThrust = 0f;
+    [SerializeField] private float thrustAcceleration = 2f;
     private Rigidbody rb;
 
     void Start()
@@ -39,7 +40,13 @@ public class FlightController : MonoBehaviour
     {
         if (Input.GetKey(KeyCode.Space))
         {
-            transform.Translate(Vector3.forward * thrustSpeed * Time.deltaTime);
+            currentThrust = Mathf.Lerp(currentThrust, thrustSpeed, thrustAcceleration * Time.deltaTime);
         }
+        else
+        {
+            currentThrust = Mathf.Lerp(currentThrust, 0f, thrustAcceleration * Time.deltaTime);
+        }
+
+        transform.Translate(Vector3.forward * currentThrust * Time.deltaTime);
     }
 }
